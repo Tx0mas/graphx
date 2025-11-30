@@ -2,11 +2,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class PolynomialM:
-    def __init__(self,x,y,coef):
+    def __init__(self,x,y,coef,x_err=None,y_err=None):
         self.x_data=np.array(x)
         self.y_data=np.array(y)        
         self.coef=coef
-
 
     def predecir(self,x):
         x=np.array(x)
@@ -22,6 +21,7 @@ class PolynomialM:
         
         plt.scatter(self.x_data,self.y_data,color="blue", label="Datos")
         plt.plot(grilla_x,y_en_grilla, color="red", label="Ajuste polinómico")
+        plt.errorbar(x,y,yerr=y_err,xerr=x_err, fmt='o', capsize=5)
         plt.legend()
         plt.xlabel("x")
         plt.ylabel("y")
@@ -35,4 +35,3 @@ def fit(x,y,coef):
     coeffs = np.polyfit(x, y, coef)
     model = PolynomialM(x,y, coeffs)
     return model
-
