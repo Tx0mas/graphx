@@ -1,21 +1,44 @@
-def fit(x,y,potencia):
-    if len(x)!=len(y):
-        exit("len(x)!=len(y)")
-    else:
-        #Queremos (V^t.V).a=V^t.y
-        #V tiene la pinta
-        #[1, x0, x0^2, ..., x0^degree]
-        #[1, x1, x1^2, ..., x1^degree]
+import numpy as np
+import matplotlib.pyplot as plt
 
-        #CREAMOS V
-        V=[]
-        for i in range(len(x)+1):
-            fila=[]
-            for k in range(potencia + 1):
-                fila.append(x[i]**k)
-            
-            V.append(fila)
-        
-        #CALC V.V^t
+class PolynomialM:
+    def __init__(self,x,y,coef):
+        self.x_data=np.array(x)
+        self.y_data=np.array(y)        
+        self.coef=coef
 
+
+    def predecir(self,x):
+        x=np.array(x)
+        y=np.polyval(self.coef,x)
+        return y
+    def plot(self):
+        #Trabajemos con plt.
+        x_min=min(self.x_data)
+        x_max=max(self.x_data)
+
+        grilla_x=np.linspace(x_min,x_max,200)
+        y_en_grilla=np.polyval(self.coef,grilla_x)
         
+        plt.scatter(self.x_data,self.y_data,color="blue", label="Datos")
+        plt.plot(grilla_x,y_en_grilla, color="red", label="Ajuste polinómico")
+        plt.legend()
+        plt.xlabel("x")
+        plt.ylabel("y")
+        plt.title("Ajuste polinómico")
+        plt.grid(True)
+        plt.show()
+
+
+
+def fit(x,y,coef):
+    coeffs = np.polyfit(x, y, coef)
+    model = PolynomialM(x,y, coeffs)
+    return model
+
+
+x = [1, 2, 3, 4, 5]
+y = [2, 3, 4, 5, 6]
+
+model = fit(x, y, 2)
+model.plot()
